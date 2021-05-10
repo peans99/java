@@ -1,0 +1,10 @@
+FROM amd64/alpine:3.12.3
+#installing Java
+RUN apk add openjdk11
+RUN addgroup -S spring && adduser -S spring -G spring
+RUN chown -R spring:spring /opt
+RUN chmod 777 -R /opt
+USER spring:spring
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} /opt/app.jar
+ENTRYPOINT ["java","-jar","/opt/app.jar", "--trace"]
